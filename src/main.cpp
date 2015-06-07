@@ -1025,7 +1025,7 @@ int64_t GetProofOfWorkReward(int64_t nFees, int nHeight)
 
 // miner's coin stake reward based on nBits and coin age spent (coin-days)
 // simple algorithm, not depend on the diff
-int64 GetProofOfStakeReward(int64 nCoinAge, unsigned int nBits, unsigned int nTime)
+int64_t GetProofOfStakeReward(int64 nCoinAge, unsigned int nBits, unsigned int nTime)
 {
     int64 nRewardCoinYear;
 
