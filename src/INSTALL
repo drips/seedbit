@@ -1,0 +1,9 @@
+Building Seedbit
+
+See doc/readme-qt.rst for instructions on building Seedbit QT,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of Seedbit.
+
+See doc/build-*.txt for instructions on building Testcoind,
+the intended-for-services, no-graphical-interface, reference
+implementation of Seedbit.
