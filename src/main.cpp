@@ -1023,19 +1023,24 @@ int64_t GetProofOfWorkReward(int64_t nFees, int nHeight)
     return nSubsidy + nFees;
 }
 
-// miner's coin stake reward based on nBits and coin age spent (coin-days)
-// simple algorithm, not depend on the diff
-int64_t GetProofOfStakeReward(int64_t nCoinAge, unsigned int nBits, unsigned int nTime)
+// miner's coin stake reward based on coin age spent (coin-days)
+int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees, int nHeight)
 {
-    int64 nRewardCoinYear;
+    // int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
+    int64_t nSubsidy = 1 * COIN;
+    if(nHeight < 5000)
+    {
+        nSubsidy = 50 * COIN;
+    }
+    else 
+    {
+	    nSubsidy = 300 * CENT;
+    }
 
-	nRewardCoinYear = MAX_MINT_PROOF_OF_STAKE;
+    if (fDebug && GetBoolArg("-printcreation"))
+        printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nCoinAge);
 
-    int64 nSubsidy = nCoinAge * nRewardCoinYear / 365;
-
-	if (fDebug && GetBoolArg("-printcreation"))
-        printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRI64d" nBits=%d\n", FormatMoney(nSubsidy).c_str(), nCoinAge, nBits);
-    return nSubsidy;
+    return nSubsidy + nFees;
 }
 
 
