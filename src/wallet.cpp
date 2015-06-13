@@ -1706,7 +1706,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Calculate coin age reward
     {
-        uint64 nCoinAge;
+        int64_t nCoinAge;
         CTxDB txdb("r");
 		const CBlockIndex* pIndex0 = GetLastBlockIndex(pindexBest, false);
 
