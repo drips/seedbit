@@ -48,8 +48,8 @@ static const int64_t nInterval = nTargetTimespan / nTargetSpacing;
 
 static const int64_t nDiffChangeTarget = 1;
 
-unsigned int nStakeMinAge = 1 * 60 * 60;
-unsigned int nStakeMaxAge = 24 * 60 * 60;
+unsigned int nStakeMinAge = 60 * 60 * 24 * 5;
+unsigned int nStakeMaxAge = 60 * 60 * 24 * 15;
 unsigned int nModifierInterval = 10 * 60; // seedbit - time to elapse before new modifier is computed
 
 int nCoinbaseMaturity = 10;
