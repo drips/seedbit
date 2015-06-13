@@ -1038,7 +1038,7 @@ int64_t GetProofOfStakeReward(int64_t nCoinAge, unsigned int nBits, unsigned int
 	
 int64_t GetProofOfStakeRewardV1(int64_t nCoinAge, unsigned int nBits, unsigned int nTime, int nHeight)
 {
-    int64 nRewardCoinYear;
+    int64_t nRewardCoinYear;
 
 	nRewardCoinYear = MAX_MINT_PROOF_OF_STAKE;
 
@@ -1051,7 +1051,7 @@ int64_t GetProofOfStakeRewardV1(int64_t nCoinAge, unsigned int nBits, unsigned i
 
 int64_t GetProofOfStakeRewardV2(int64_t nCoinAge, unsigned int nBits, unsigned int nTime, int nHeight)
 {
-    int64 nRewardCoinYear, nSubsidyLimit = 400 * COIN;
+    int64_t nRewardCoinYear, nSubsidyLimit = 400 * COIN;
 
 	nRewardCoinYear = MAX_MINT_PROOF_OF_STAKEV2;
 
