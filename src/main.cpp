@@ -48,11 +48,11 @@ static const int64_t nInterval = nTargetTimespan / nTargetSpacing;
 
 static const int64_t nDiffChangeTarget = 1;
 
-unsigned int nStakeMinAge = 3 * 60 * 60; // 3 hours
-unsigned int nStakeMaxAge = 24 * 60 * 60; // 24 hours
+unsigned int nStakeMinAge = 1 * 60 * 60;
+unsigned int nStakeMaxAge = 24 * 60 * 60;
 unsigned int nModifierInterval = 10 * 60; // seedbit - time to elapse before new modifier is computed
 
-int nCoinbaseMaturity = 80;
+int nCoinbaseMaturity = 10;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
 
@@ -1024,26 +1024,46 @@ int64_t GetProofOfWorkReward(int64_t nFees, int nHeight)
 }
 
 // miner's coin stake reward based on coin age spent (coin-days)
-int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees, int nHeight)
+int64_t GetProofOfStakeReward(int64_t nCoinAge, unsigned int nBits, unsigned int nTime, int nHeight)
 {
-    // int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
-    int64_t nSubsidy = 1 * COIN;
-    if(nHeight < 5000)
-    {
-        nSubsidy = 50 * COIN;
-    }
-    else 
-    {
-	    nSubsidy = 300 * CENT;
-    }
+	int64_t nSubsidy = 0;
+	
+	if ( nTime > FORK_TIME )
+		nSubsidy = GetProofOfStakeRewardV2(nCoinAge, nBits, nTime,nHeight);
+	else
+		nSubsidy = GetProofOfStakeRewardV1(nCoinAge, nBits, nTime, nHeight);
+		
+	return nSubsidy;
+}	
+	
+int64_t GetProofOfStakeRewardV1(int64_t nCoinAge, unsigned int nBits, unsigned int nTime, int nHeight)
+{
+    int64 nRewardCoinYear;
 
-    if (fDebug && GetBoolArg("-printcreation"))
-        printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nCoinAge);
+	nRewardCoinYear = MAX_MINT_PROOF_OF_STAKE;
 
-    return nSubsidy + nFees;
+    int64_t nSubsidy = nCoinAge * nRewardCoinYear / 365;
+
+	if (fDebug && GetBoolArg("-printcreation"))
+        printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRI64d" nBits=%d\n", FormatMoney(nSubsidy).c_str(), nCoinAge, nBits);
+    return nSubsidy;
+}	
+
+int64_t GetProofOfStakeRewardV2(int64_t nCoinAge, unsigned int nBits, unsigned int nTime, int nHeight)
+{
+    int64 nRewardCoinYear, nSubsidyLimit = 400 * COIN;
+
+	nRewardCoinYear = MAX_MINT_PROOF_OF_STAKEV2;
+
+    int64_t nSubsidy = nCoinAge * nRewardCoinYear / 365;
+
+	if (fDebug && GetBoolArg("-printcreation"))
+        printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRI64d" nBits=%d\n", FormatMoney(nSubsidy).c_str(), nCoinAge, nBits);
+		
+	nSubsidy = min(nSubsidy, nSubsidyLimit);
+	 
+    return nSubsidy;
 }
-
-
 
 //
 // maximum nBits value could possible be required nTime after
