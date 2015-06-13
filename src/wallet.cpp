@@ -1706,16 +1706,13 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Calculate coin age reward
     {
-        uint64_t nCoinAge;
+        uint64 nCoinAge;
         CTxDB txdb("r");
+		const CBlockIndex* pIndex0 = GetLastBlockIndex(pindexBest, false);
+
         if (!txNew.GetCoinAge(txdb, nCoinAge))
             return error("CreateCoinStake : failed to calculate coin age");
-
-        int64_t nReward = GetProofOfStakeRewardV2(nCoinAge, nFees, pindexPrev->nHeight + 1);
-        if (nReward <= 0)
-            return false;
-
-        nCredit += nReward;
+        nCredit += GetProofOfStakeReward(nCoinAge, nBits, txNew.nTime, pIndex0->nHeight);
     }
 
     // Set output amount
