@@ -15,7 +15,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
-
+#include <boost/random/uniform_int_distribution.hpp>
 
 #include <stdio.h>
 
@@ -1045,7 +1045,7 @@ int64_t GetProofOfStakeRewardV1(int64_t nCoinAge, unsigned int nBits, unsigned i
     int64_t nSubsidy = nCoinAge * nRewardCoinYear / 365;
 
 	if (fDebug && GetBoolArg("-printcreation"))
-        printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRI64d"/n nBits=%d\n", FormatMoney(nSubsidy).c_str(), nCoinAge, nBits);
+        printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nCoinAge);
     return nSubsidy;
 }	
 
@@ -1058,7 +1058,7 @@ int64_t GetProofOfStakeRewardV2(int64_t nCoinAge, unsigned int nBits, unsigned i
     int64_t nSubsidy = nCoinAge * nRewardCoinYear / 365;
 
 	if (fDebug && GetBoolArg("-printcreation"))
-        printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRI64d"/n nBits=%d\n", FormatMoney(nSubsidy).c_str(), nCoinAge, nBits);
+        printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nCoinAge);
 		
 	nSubsidy = min(nSubsidy, nSubsidyLimit);
 	 
